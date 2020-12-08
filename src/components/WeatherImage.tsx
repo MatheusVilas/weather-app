@@ -1,15 +1,30 @@
-import React from "react";
-import { View, Text, Image } from "react-native";
+import React from 'react'
+import { View, Text, Image } from 'react-native'
 
+export type WeatherType = 'cloudy' | 'rain' | 'sun' | 'thunder'
 interface WeatherImageProps {
-  type: "cloudy" | "rain" | "sun" | "thunder";
-  size: "large" | "small";
+  type: WeatherType
+  size: 'large' | 'small'
 }
 
 export function WeatherImage({ size, type }: WeatherImageProps) {
+  const allTypes = {
+    cloudy: require('../assets/images/cloudy.png'),
+    rain: require('../assets/images/rain.png'),
+    sun: require('../assets/images/sun.png'),
+    thunder: require('../assets/images/thunder.png'),
+  }
+
   return (
-    <View>
-      <Image source={require("../assets/images/rain.png")} />
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        alignSelf: 'center',
+      }}
+    >
+      <Image resizeMode="center" source={allTypes[type]} />
     </View>
-  );
+  )
 }

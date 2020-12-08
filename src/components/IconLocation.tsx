@@ -1,5 +1,5 @@
-import * as React from "react";
-import Svg, { G, Path, Defs } from "react-native-svg";
+import * as React from 'react'
+import Svg, { G, Path, Defs } from 'react-native-svg'
 
 export function IconLocation() {
   return (
@@ -12,5 +12,5 @@ export function IconLocation() {
       </G>
       <Defs></Defs>
     </Svg>
-  );
+  )
 }

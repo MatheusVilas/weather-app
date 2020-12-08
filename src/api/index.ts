@@ -1,18 +1,19 @@
-import Axios from "axios";
+import Axios from 'axios'
+import { API_KEY } from '@env'
 
-export const API_ID = "f91f15954a6274d46f5942a83540787b";
+export const API_ID = API_KEY
 
 export const weatherApi = Axios.create({
   baseURL: `https://api.openweathermap.org`,
-});
+})
 
 interface IWeather {
-  lat: number;
-  long: number;
+  lat: number
+  long: number
 }
 
 export function getWeatherByLocalization({ lat, long }: IWeather) {
   return weatherApi.get(
-    `data/2.5/onecall?lat=${lat}&lon=${long}&appid=${API_ID}`
-  );
+    `data/2.5/onecall?lat=${lat}&lon=${long}&appid=${API_ID}`,
+  )
 }

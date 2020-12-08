@@ -1,9 +1,9 @@
-import * as React from "react";
-import { StyleProp, ViewStyle } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import * as React from 'react'
+import { StyleProp, ViewStyle } from 'react-native'
+import Svg, { Path } from 'react-native-svg'
 
 interface LineLeftProps {
-  style?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>
 }
 
 export function LineLeft({ style }: LineLeftProps) {
@@ -23,5 +23,5 @@ export function LineLeft({ style }: LineLeftProps) {
         strokeDasharray="10 10"
       />
     </Svg>
-  );
+  )
 }
