@@ -4,6 +4,7 @@ import { getWeatherByLocalization } from '../../api'
 import * as Location from 'expo-location'
 import { useAppState } from '../../hooks/appState'
 import { Loading } from '../../components/Loading'
+import Background from '../../components/Background'
 import { showMessage } from 'react-native-flash-message'
 import { LinearGradient } from 'expo-linear-gradient'
 import {
@@ -13,12 +14,17 @@ import {
 } from '@expo-google-fonts/overpass'
 import { IconHumidity } from '../../components/IconHumidity'
 import Header from './Header'
+import Temperature from './Temperature'
+import { Button } from '../../components/Button'
+import { useNavigation } from '@react-navigation/native'
 
 export function Home() {
+  const navigation = useNavigation()
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
   const [weatherByLocalization, setWeatherByLocalization] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [triggerRefresh, setTriggerRefresh] = useState(false)
   const appState = useAppState()
   let [fontsLoaded] = useFonts({
     Overpass_700Bold,
@@ -29,7 +35,7 @@ export function Home() {
     if (appState !== 'active') return
 
     requestLocalization()
-  }, [appState])
+  }, [appState, triggerRefresh])
 
   useEffect(() => {
     if (!location) return
@@ -42,9 +48,10 @@ export function Home() {
         setWeatherByLocalization(JSON.stringify(success))
       })
       .catch(error => {
+        setErrorMsg(error.message)
         showMessage({
           message: 'Sorry',
-          description: 'We have a problem, try later',
+          description: 'We have a problem, try again',
           type: 'danger',
           autoHide: true,
           duration: 10000,
@@ -75,197 +82,46 @@ export function Home() {
     setLocation(location)
   }
 
-  if (isLoading || !fontsLoaded) return <Loading />
+  if (isLoading || !fontsLoaded)
+    return (
+      <Background>
+        <Loading />
+      </Background>
+    )
+
+  if (errorMsg)
+    return (
+      <Background>
+        <Button
+          style={{ marginTop: 120 }}
+          label="Refresh"
+          onPress={() => {
+            setErrorMsg('')
+            setIsLoading(true)
+            setTriggerRefresh(!triggerRefresh)
+          }}
+        />
+      </Background>
+    )
 
   return (
-    <LinearGradient colors={['#47BFDF', '#4A91FF']} style={{ flex: 1 }}>
+    <Background>
       <View style={styles.wrapper}>
         <Header location="Praia Grande" weatherType="thunder" />
         <View style={styles.content}>
           <View style={styles.container}>
-            <View
-              style={{
-                paddingTop: 17,
-                paddingBottom: 27,
-                backgroundColor: 'rgba(255,255,255, 0.3)',
-                borderRadius: 18,
-                borderWidth: 1,
-                borderColor: 'white',
-              }}
-            >
-              <Text
-                style={[
-                  {
-                    fontFamily: 'Overpass_400Regular',
-                    fontSize: 18,
-                    color: 'white',
-                    textAlign: 'center',
-                    marginBottom: 5,
-                  },
-                  styles.textShadow,
-                ]}
-              >
-                Today, 12 September
-              </Text>
-              <Text
-                style={[
-                  {
-                    fontFamily: 'Overpass_400Regular',
-                    fontSize: 68,
-                    color: 'white',
-                    textAlign: 'center',
-                  },
-                  styles.textShadow,
-                ]}
-              >
-                29°
-              </Text>
-              <Text
-                style={[
-                  {
-                    fontFamily: 'Overpass_700Bold',
-                    fontSize: 22,
-                    color: 'white',
-                    textAlign: 'center',
-                    marginTop: -10,
-                    marginBottom: 30,
-                  },
-                  styles.textShadow,
-                ]}
-              >
-                Cloudy
-              </Text>
-              <View
-                style={{
-                  width: 200,
-                  alignSelf: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: 16,
-                  }}
-                >
-                  <IconHumidity />
-                  <Text
-                    style={[
-                      {
-                        fontFamily: 'Overpass_400Regular',
-                        fontSize: 18,
-                        color: 'white',
-                        textAlign: 'center',
-                      },
-                      styles.textShadow,
-                    ]}
-                  >
-                    Wind
-                  </Text>
-                  <Text
-                    style={[
-                      {
-                        fontFamily: 'Overpass_400Regular',
-                        fontSize: 18,
-                        color: 'white',
-                        textAlign: 'center',
-                      },
-                      styles.textShadow,
-                    ]}
-                  >
-                    |
-                  </Text>
-                  <Text
-                    style={[
-                      {
-                        fontFamily: 'Overpass_400Regular',
-                        fontSize: 18,
-                        color: 'white',
-                        textAlign: 'center',
-                      },
-                      styles.textShadow,
-                    ]}
-                  >
-                    10km/h
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  <IconHumidity />
-                  <Text
-                    style={[
-                      {
-                        fontFamily: 'Overpass_400Regular',
-                        fontSize: 18,
-                        color: 'white',
-                        textAlign: 'center',
-                      },
-                      styles.textShadow,
-                    ]}
-                  >
-                    Wind
-                  </Text>
-                  <Text
-                    style={[
-                      {
-                        fontFamily: 'Overpass_400Regular',
-                        fontSize: 18,
-                        color: 'white',
-                        textAlign: 'center',
-                      },
-                      styles.textShadow,
-                    ]}
-                  >
-                    |
-                  </Text>
-                  <Text
-                    style={[
-                      {
-                        fontFamily: 'Overpass_400Regular',
-                        fontSize: 18,
-                        color: 'white',
-                        textAlign: 'center',
-                      },
-                      styles.textShadow,
-                    ]}
-                  >
-                    10km/h
-                  </Text>
-                </View>
-              </View>
-            </View>
+            <Temperature />
           </View>
         </View>
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#fff',
-            paddingHorizontal: 28,
-            paddingVertical: 18,
-            borderRadius: 18,
-            width: 220,
-            alignSelf: 'center',
+        <Button
+          label="Complete Report"
+          onPress={() => {
+            navigation.navigate('Detailed')
           }}
-        >
-          <Text
-            style={{
-              fontFamily: 'Overpass_400Regular',
-              color: '#444E72',
-              fontSize: 18,
-              textAlign: 'center',
-            }}
-          >
-            Complete Report
-          </Text>
-        </TouchableOpacity>
+        />
       </View>
-    </LinearGradient>
+    </Background>
   )
 }
 
@@ -280,19 +136,5 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  locationText: {
-    fontFamily: 'Overpass_700Bold',
-    color: 'white',
-    fontSize: 24,
-    marginLeft: 20,
-  },
-  textShadow: {
-    textShadowColor: 'rgba(0, 0, 0, 0.1)',
-    textShadowOffset: {
-      width: -2,
-      height: 3,
-    },
-    textShadowRadius: 1,
   },
 })

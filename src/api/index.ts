@@ -1,5 +1,6 @@
-import Axios from 'axios'
+// @ts-ignore
 import { API_KEY } from '@env'
+import Axios from 'axios'
 
 export const API_ID = API_KEY
 
