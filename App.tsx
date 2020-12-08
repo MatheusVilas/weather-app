@@ -1,21 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useRef } from "react";
+import FlashMessage from "react-native-flash-message";
+import SafeArea from "./src/components/SafeArea";
+import { Home } from "./src/view/Home";
 
 export default function App() {
+  const myFlashMessage = useRef(null);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeArea>
+      <Home />
+      <FlashMessage ref={myFlashMessage} />
+    </SafeArea>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
