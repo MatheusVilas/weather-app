@@ -88,6 +88,12 @@ export function Home() {
     setLocation(location)
   }
 
+  function handleReload() {
+    setErrorMsg('')
+    setIsLoading(true)
+    setTriggerRefresh(!triggerRefresh)
+  }
+
   if (isLoading || !fontsLoaded)
     return (
       <Background>
@@ -101,11 +107,7 @@ export function Home() {
         <Button
           style={{ marginTop: 120 }}
           label="Refresh"
-          onPress={() => {
-            setErrorMsg('')
-            setIsLoading(true)
-            setTriggerRefresh(!triggerRefresh)
-          }}
+          onPress={handleReload}
         />
       </Background>
     )
@@ -117,6 +119,7 @@ export function Home() {
           lat={location?.coords.latitude}
           long={location?.coords.longitude}
           weatherType={weatherByLocalization?.current?.weather[0].main}
+          handleReload={handleReload}
         />
         <View style={styles.content}>
           <View style={styles.container}>

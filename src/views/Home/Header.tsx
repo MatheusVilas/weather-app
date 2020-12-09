@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { getCityByLocalization } from '../../api'
 import { IconLocation } from '../../components/IconLocation'
+import { IconReload } from '../../components/IconReload'
 
 import TextShadow from '../../components/TextShadow'
 import { WeatherImage, WeatherType } from '../../components/WeatherImage'
@@ -14,9 +15,28 @@ interface HeaderProps {
   lat: number | undefined
   long: number | undefined
   weatherType: WeatherType
+  handleReload: () => void
 }
 
-export default function Header({ lat, long, weatherType }: HeaderProps) {
+export default function Header({
+  lat,
+  long,
+  weatherType,
+  handleReload,
+}: HeaderProps) {
+  const [cityName, setCityName] = useState('')
+
+  async function requestCityName() {
+    if (!lat || !long) return
+    getCityByLocalization({ lat, long }).then(success => {
+      setCityName(success.data.city)
+    })
+  }
+
+  useEffect(() => {
+    if (!cityName && lat && long) requestCityName()
+  }, [])
+
   return (
     <View style={styles.header}>
       <Container>
@@ -28,10 +48,14 @@ export default function Header({ lat, long, weatherType }: HeaderProps) {
               color: 'white',
               fontSize: 24,
               marginLeft: 20,
+              flex: 1,
             }}
           >
-            {lat}, {long}
+            {cityName ? cityName : `${lat}, ${long}`}
           </TextShadow>
+          <TouchableOpacity style={styles.reload} onPress={handleReload}>
+            <IconReload />
+          </TouchableOpacity>
         </View>
 
         <WeatherImage size="large" type={weatherType} />
@@ -50,4 +74,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  reload: {},
 })

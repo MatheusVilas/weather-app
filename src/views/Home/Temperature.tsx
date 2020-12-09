@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { IconHumidity } from '../../components/IconHumidity'
 import { IconWind } from '../../components/IconWind'
 import TextShadow from '../../components/TextShadow'
@@ -8,7 +8,7 @@ import moment from 'moment-timezone'
 interface TemperatureProps {
   temperature: number
   humidity: string
-  wind_speed: string
+  wind_speed: number
   weatherType: string
 }
 
@@ -41,7 +41,7 @@ export default function Temperature({
           </TextShadow>
           <TextShadow style={styles.detailTd}>|</TextShadow>
           <TextShadow style={[styles.detailTd, styles.fixWidth]}>
-            {wind_speed}km/h
+            {Math.floor(wind_speed)}km/h
           </TextShadow>
         </View>
         <View style={styles.detailRow}>
