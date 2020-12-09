@@ -4,6 +4,7 @@ Aplicativo para consultar a previsão do tempo baseado na sua localização vige
 
 ## Demo
 
+![treeview do projeto](https://github.com//MatheusVilas/weather-app/blob/main/assets/demo.jpeg?raw=true)
 Para testar o aplicativo no device, basta acessar o link:
 https://expo.io/@matsvilas/projects/weather-app
 
@@ -11,7 +12,7 @@ https://expo.io/@matsvilas/projects/weather-app
 
 O Projeto foi organizado pensando na escalabilidade de possíveis ferramentas e features.
 
-![alt text](https://github.com//MatheusVilas/weather-app/blob/main/assets/treeview.png?raw=true)
+![treeview do projeto](https://github.com//MatheusVilas/weather-app/blob/main/assets/treeview.png?raw=true)
 
 1. A pasta `views` irá guardar as rotas do aplicativo e todos os arquivos dependentes que não são repetidos em outro lugar.
 2. A pasta `components` irá guardar todos os elementos visuais que são repetidos entre as `views`.
