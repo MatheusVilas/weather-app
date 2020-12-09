@@ -1,34 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Linking, StyleSheet, View } from 'react-native'
 import { getWeatherByLocalization } from '../../api'
 import * as Location from 'expo-location'
 import { useAppState } from '../../hooks/appState'
 import { Loading } from '../../components/Loading'
 import Background from '../../components/Background'
 import { showMessage } from 'react-native-flash-message'
-import { LinearGradient } from 'expo-linear-gradient'
+
 import {
   useFonts,
   Overpass_700Bold,
   Overpass_400Regular,
+  Overpass_600SemiBold,
+  Overpass_900Black,
 } from '@expo-google-fonts/overpass'
-import { IconHumidity } from '../../components/IconHumidity'
+
 import Header from './Header'
 import Temperature from './Temperature'
 import { Button } from '../../components/Button'
 import { useNavigation } from '@react-navigation/native'
+import TextShadow from '../../components/TextShadow'
 
 export function Home() {
   const navigation = useNavigation()
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
-  const [weatherByLocalization, setWeatherByLocalization] = useState('')
+  const [weatherByLocalization, setWeatherByLocalization] = useState<any>('')
   const [isLoading, setIsLoading] = useState(true)
   const [triggerRefresh, setTriggerRefresh] = useState(false)
   const appState = useAppState()
   let [fontsLoaded] = useFonts({
     Overpass_700Bold,
     Overpass_400Regular,
+    Overpass_600SemiBold,
+    Overpass_900Black,
   })
 
   useEffect(() => {
@@ -45,7 +50,8 @@ export function Home() {
       long: location?.coords.longitude,
     })
       .then(success => {
-        setWeatherByLocalization(JSON.stringify(success))
+        console.log(success.data)
+        setWeatherByLocalization(success.data)
       })
       .catch(error => {
         setErrorMsg(error.message)
@@ -107,17 +113,29 @@ export function Home() {
   return (
     <Background>
       <View style={styles.wrapper}>
-        <Header location="Praia Grande" weatherType="thunder" />
+        <Header
+          lat={location?.coords.latitude}
+          long={location?.coords.longitude}
+          weatherType={weatherByLocalization?.current?.weather[0].main}
+        />
         <View style={styles.content}>
           <View style={styles.container}>
-            <Temperature />
+            <Temperature
+              wind_speed={weatherByLocalization?.current?.wind_speed}
+              weatherType={weatherByLocalization?.current?.weather[0].main}
+              humidity={weatherByLocalization?.current?.humidity}
+              temperature={weatherByLocalization?.current?.temp}
+            />
           </View>
         </View>
 
         <Button
           label="Complete Report"
           onPress={() => {
-            navigation.navigate('Detailed')
+            navigation.navigate('Detailed', {
+              hourly: weatherByLocalization.hourly,
+              daily: weatherByLocalization.daily,
+            })
           }}
         />
       </View>

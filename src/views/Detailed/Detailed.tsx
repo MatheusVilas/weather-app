@@ -1,10 +1,19 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 
-export function Detailed() {
+import Background from '../../components/Background'
+import { Days } from './Days'
+import { Header } from './Header'
+
+import { Hours } from './Hours'
+
+export function Detailed({ route }: any) {
+  const { hourly, daily } = route?.params
+
   return (
-    <View>
-      <Text>Detailed</Text>
-    </View>
+    <Background>
+      <Header />
+      <Hours {...{ hourly }} />
+      <Days {...{ daily }} />
+    </Background>
   )
 }

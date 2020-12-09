@@ -3,15 +3,35 @@ import { View, Text, StyleSheet } from 'react-native'
 import { IconHumidity } from '../../components/IconHumidity'
 import { IconWind } from '../../components/IconWind'
 import TextShadow from '../../components/TextShadow'
+import moment from 'moment-timezone'
 
-export default function Temperature() {
+interface TemperatureProps {
+  temperature: number
+  humidity: string
+  wind_speed: string
+  weatherType: string
+}
+
+export default function Temperature({
+  temperature,
+  humidity,
+  wind_speed,
+  weatherType,
+}: TemperatureProps) {
+  const day = moment().tz('America/Sao_Paulo').format('DD')
+  const month = moment().tz('America/Sao_Paulo').format('MMMM')
+
   return (
     <View style={styles.wrapper}>
-      <TextShadow style={styles.todayDate}>Today, 12 September</TextShadow>
+      <TextShadow style={styles.todayDate}>
+        Today, {day} {month}
+      </TextShadow>
 
-      <TextShadow style={styles.temperature}>29°</TextShadow>
+      <TextShadow style={styles.temperature}>
+        {Math.floor(temperature)}°
+      </TextShadow>
 
-      <TextShadow style={styles.temperatureStatus}>Cloudy</TextShadow>
+      <TextShadow style={styles.temperatureStatus}>{weatherType}</TextShadow>
 
       <View style={styles.detailTable}>
         <View style={styles.detailRow}>
@@ -21,7 +41,7 @@ export default function Temperature() {
           </TextShadow>
           <TextShadow style={styles.detailTd}>|</TextShadow>
           <TextShadow style={[styles.detailTd, styles.fixWidth]}>
-            10km/h
+            {wind_speed}km/h
           </TextShadow>
         </View>
         <View style={styles.detailRow}>
@@ -31,7 +51,7 @@ export default function Temperature() {
           </TextShadow>
           <TextShadow style={styles.detailTd}>|</TextShadow>
           <TextShadow style={[styles.detailTd, styles.fixWidth]}>
-            54 %
+            {humidity} %
           </TextShadow>
         </View>
       </View>

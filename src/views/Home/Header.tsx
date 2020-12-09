@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
+import { getCityByLocalization } from '../../api'
 import { IconLocation } from '../../components/IconLocation'
 
 import TextShadow from '../../components/TextShadow'
@@ -10,11 +11,12 @@ const SCREEN_HEIGHT = Dimensions.get('screen').height
 const HEADER_HEIGHT = SCREEN_HEIGHT * 0.3
 
 interface HeaderProps {
-  location: string
+  lat: number | undefined
+  long: number | undefined
   weatherType: WeatherType
 }
 
-export default function Header({ location, weatherType }: HeaderProps) {
+export default function Header({ lat, long, weatherType }: HeaderProps) {
   return (
     <View style={styles.header}>
       <Container>
@@ -28,7 +30,7 @@ export default function Header({ location, weatherType }: HeaderProps) {
               marginLeft: 20,
             }}
           >
-            {location}
+            {lat}, {long}
           </TextShadow>
         </View>
 

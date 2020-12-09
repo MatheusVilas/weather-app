@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Image, ViewStyle, StyleProp } from 'react-native'
+import { getCorrectWeatherType } from '../function/getCorrectWeatherType'
 
 export type WeatherType = 'cloudy' | 'rain' | 'sun' | 'thunder'
 interface WeatherImageProps {
   type: WeatherType
   size: 'large' | 'small'
+  style?: StyleProp<ViewStyle>
 }
 
 export function WeatherImage({ size, type }: WeatherImageProps) {
@@ -17,14 +19,27 @@ export function WeatherImage({ size, type }: WeatherImageProps) {
 
   return (
     <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-        alignSelf: 'center',
-      }}
+      style={[
+        {
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf: 'center',
+        },
+        size === 'small' ? {} : { flex: 1 },
+      ]}
     >
-      <Image resizeMode="center" source={allTypes[type]} />
+      <Image
+        style={
+          size === 'small'
+            ? {
+                width: 40,
+                height: 40,
+              }
+            : {}
+        }
+        resizeMode={size === 'small' ? 'contain' : 'center'}
+        source={allTypes[getCorrectWeatherType(type)]}
+      />
     </View>
   )
 }
