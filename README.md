@@ -5,6 +5,7 @@ Aplicativo para consultar a previsão do tempo baseado na sua localização vige
 ## Demo
 
 ![treeview do projeto](https://github.com//MatheusVilas/weather-app/blob/main/assets/demo.jpg?raw=true)
+
 Para testar o aplicativo no device, basta acessar o link:
 https://expo.io/@matsvilas/projects/weather-app
 
